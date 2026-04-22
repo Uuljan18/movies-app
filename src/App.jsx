@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 function App() {
-  
   const movies = [
     { id: 1, title: "Интерстеллар", year: 2014, category: "Sci-Fi" },
     { id: 2, title: "Начало", year: 2010, category: "Action" },
@@ -11,7 +10,6 @@ function App() {
     { id: 6, title: "Мстители", year: 2012, category: "Action" }
   ];
 
-  
   const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [category, setCategory] = useState("All");
@@ -19,7 +17,6 @@ function App() {
 
   const moviesPerPage = 3;
 
- 
   const styles = {
     container: {
       padding: "20px",
@@ -31,11 +28,17 @@ function App() {
       padding: "10px",
       margin: "10px 0",
       border: "1px solid #ddd",
-      borderRadius: "8px"
+      borderRadius: "8px",
+      backgroundColor: "#f9f9f9"
     },
     button: {
       marginLeft: "10px",
       cursor: "pointer"
+    },
+    input: {
+      padding: "8px",
+      width: "100%",
+      marginBottom: "10px"
     }
   };
 
@@ -43,7 +46,6 @@ function App() {
     setFavorites([...favorites, movie]);
   };
 
-  
   const filteredMovies = movies
     .filter(movie =>
       movie.title.toLowerCase().includes(search.toLowerCase())
@@ -52,7 +54,6 @@ function App() {
       category === "All" ? true : movie.category === category
     );
 
-  
   const indexOfLast = page * moviesPerPage;
   const indexOfFirst = indexOfLast - moviesPerPage;
   const currentMovies = filteredMovies.slice(indexOfFirst, indexOfLast);
@@ -62,28 +63,25 @@ function App() {
   return (
     <div style={styles.container}>
 
-      <h1> </h1>
+      <h1>Каталог фильмов</h1>
 
-      
       <input
+        style={styles.input}
         type="text"
         placeholder="Поиск фильма..."
-        style={{ padding: "5px", width: "100%" }}
         onChange={(e) => {
           setSearch(e.target.value);
           setPage(1);
         }}
       />
 
-      
-      <div style={{ marginTop: "10px" }}>
+      <div>
         <button onClick={() => { setCategory("All"); setPage(1); }}>Все</button>
         <button onClick={() => { setCategory("Sci-Fi"); setPage(1); }}>Sci-Fi</button>
         <button onClick={() => { setCategory("Action"); setPage(1); }}>Action</button>
         <button onClick={() => { setCategory("Drama"); setPage(1); }}>Drama</button>
       </div>
 
-     
       <h2>Фильмы</h2>
 
       <ul style={{ listStyle: "none", padding: 0 }}>
@@ -94,27 +92,21 @@ function App() {
               style={styles.button}
               onClick={() => addToFavorites(movie)}
             >
-              
+              ❤️
             </button>
           </li>
         ))}
       </ul>
 
-     
       <div>
         {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setPage(i + 1)}
-            style={{ margin: "3px" }}
-          >
+          <button key={i} onClick={() => setPage(i + 1)}>
             {i + 1}
           </button>
         ))}
       </div>
 
-     
-      <h2> Избранное</h2>
+      <h2>Избранное</h2>
       <ul>
         {favorites.map((movie, index) => (
           <li key={index}>{movie.title}</li>
